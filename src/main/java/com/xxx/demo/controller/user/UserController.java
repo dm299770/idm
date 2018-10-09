@@ -95,7 +95,6 @@ public class UserController {
     @RequestMapping(value = "/resetUserPassword")
     public Object resetUserPassword(String phoneNum, String newPassword) {
         //JSONObject jsonObject = sysUserServices.resetUserPassword(userId, newPassword);
-        //jwt如何注销？
         JSONObject jsonObject = tsUserServices.resetUserPassword(phoneNum,newPassword);
         return jsonObject;
     }
