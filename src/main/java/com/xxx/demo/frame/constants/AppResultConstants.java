@@ -18,12 +18,35 @@ public class AppResultConstants {
      */
     public final static String STATUS = "status";
     /**
-     * 成功1
+     * 成功 200
      */
-    public final static Integer SUCCESS_STATUS = 1;
+    public final static Integer SUCCESS_STATUS = 200;
     /**
-     * 失败2
+     * 失败 400
      */
-    public final static Integer FAIL_STATUS = 2;
+    public final static Integer FAIL_STATUS = 400;
+    /**
+     * 服务器异常 500
+     */
+    public final static Integer ERROR_STATUS = 500;
+    /**
+     * 服务器内部错误
+     */
+    public final static String SEVER_ERROR = "服务器内部错误";
+
+    /**
+     * 登录失效,请重新登录
+     */
+    public final static String LOGIN_ERROR = "登录异常";
+
+    /***
+     * 无效url
+     */
+    public final static String NOTFOUND_URL = "未知url ";
+
+    /***
+     * 无效url
+     */
+    public final static Integer NOTFOUND_ERROR = 404;
 
 }

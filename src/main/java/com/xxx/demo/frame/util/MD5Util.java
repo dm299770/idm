@@ -21,7 +21,7 @@ public class MD5Util {
      * @return 32位md5码
      */
     public static String md5(String plainText) {
-        StringBuffer buf = new StringBuffer("");
+        StringBuffer buf = new StringBuffer();
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(plainText.getBytes());

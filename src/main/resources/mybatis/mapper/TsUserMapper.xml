@@ -13,7 +13,21 @@
         <id column="PHONE_NUM" property="phoneNum" jdbcType="VARCHAR"/>
         <id column="PASSWORD" property="password" jdbcType="VARCHAR"/>
         <id column="IS_EFFCTIVE" property="isEffctive" jdbcType="TINYINT"/>
-        <id column="CREATE_DATE" property="createTime" jdbcType="DATE"/>
+        <id column="CREATE_DATE" property="createDate" jdbcType="DATE"/>
+        <id column="TOKEN" property="token" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="UserInfoResultMap" type="com.xxx.demo.dto.sys.UserInfo">
+        <id column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <id column="PHONE_NUM" property="phoneNum" jdbcType="VARCHAR"/>
+        <id column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <id column="IS_EFFCTIVE" property="isEffctive" jdbcType="TINYINT"/>
+        <id column="CREATE_DATE" property="createDate" jdbcType="DATE"/>
+        <id column="PROFILE_PHOTO" property="profilePhoto" jdbcType="VARCHAR"/>
+        <id column="NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+        <id column="REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+        <id column="SEXUAL" property="sexual" jdbcType="VARCHAR"/>
+        <id column="EMEY_CONTACT" property="emeyContact" jdbcType="VARCHAR"/>
         <id column="TOKEN" property="token" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -23,6 +37,10 @@
 
     <sql id="baseColumns">
     USER_ID,PHONE_NUM,PASSWORD,IS_EFFCTIVE,CREATE_DATE,TOKEN
+    </sql>
+
+    <sql id="UserInfoColumns">
+   tu.USER_ID,tu.PHONE_NUM,tu.PASSWORD,tui.PROFILE_PHOTO,tui.NICK_NAME,tui.REAL_NAME,tui.SEXUAL,tui.EMEY_CONTACT,tu.IS_EFFCTIVE,tu.CREATE_DATE,tu.TOKEN
     </sql>
 
     <select id="findById" resultMap="BaseResultMap">
@@ -37,9 +55,16 @@
         where PHONE_NUM = #{phoneNum} and IS_EFFCTIVE = 1
     </select>
 
+    <select id="findEffctiveUserInfoByPhoneNum" resultMap="UserInfoResultMap">
+        select <include refid="UserInfoColumns"/>
+        from TS_USER tu left JOIN TS_USER_INFO tui
+        on tu.USER_ID = tui.USER_ID
+        where tu.PHONE_NUM = #{phoneNum} and tu.IS_EFFCTIVE = 1
+    </select>
+
     <insert id="save" parameterType="TsUser">
         insert into  <include refid="tableName"/> (<include refid="baseColumns"/>)
-        VALUES (#{userId},#{phoneNum},#{password},#{isEffctive},#{createTime},#{token})
+        VALUES (#{userId},#{phoneNum},#{password},#{isEffctive},#{createDate},#{token})
     </insert>
 
     <delete id="delete" parameterType="string">
@@ -73,12 +98,12 @@
         <include refid="tableName" />
 
         <trim prefix="SET" suffixOverrides=",">
-            <if test="password!=null and password!='' ">
+            <if test="newPassword!=null and newPassword!='' ">
                 PASSWORD = #{newPassword},
             </if>
         </trim>
         WHERE
-        USER_ID = #{userId} AND PASSWORD = #{oldPassword} and IS_EFFCTIVE = 1
+        PHONE_NUM = #{phoneNum} AND PASSWORD = #{oldPassword} and IS_EFFCTIVE = 1
     </update>
 
 

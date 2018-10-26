@@ -5,6 +5,7 @@ import com.xxx.demo.services.login.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,8 @@ public class LoginController {
     private LoginService loginService;
 
     @ResponseBody
-    @RequestMapping(value = "login")
-    public Object login(String phoneNum,String password) {
+    @RequestMapping(value = "login/{phoneNum}/{password}")
+    public Object login(@PathVariable("phoneNum")String phoneNum,@PathVariable("password")String password) {
         JSONObject result = loginService.login(phoneNum,password);
         return result;
     }

@@ -1,5 +1,6 @@
 package com.xxx.demo.mapper.user;
 
+import com.xxx.demo.dto.sys.UserInfo;
 import com.xxx.demo.models.sys.TsUser;
 import org.apache.ibatis.annotations.Param;
 
@@ -66,4 +67,11 @@ public interface TsUserMapper {
      */
     void reSetPassword(@Param("phoneNum") String phoneNum, @Param("newPassword") String newPassword);
 
+    /**
+     * 根据用户名查找用户全部信息
+     *
+     * @param phoneNum 用户电话号
+     * @return
+     */
+    UserInfo findEffctiveUserInfoByPhoneNum(@Param("phoneNum") String phoneNum);
 }

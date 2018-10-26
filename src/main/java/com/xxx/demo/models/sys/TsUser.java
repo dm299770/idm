@@ -12,7 +12,7 @@ public class TsUser implements java.io.Serializable {
     private String phoneNum;
     private String password;
     private int isEffctive;
-    private Date createTime;
+    private Date createDate;
     private String token;
 
     public String getUserId() {
@@ -47,12 +47,12 @@ public class TsUser implements java.io.Serializable {
         this.isEffctive = isEffctive;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getToken() {

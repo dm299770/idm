@@ -1,5 +1,6 @@
 package com.xxx.demo.frame.init;
 
+import com.xxx.demo.dto.sys.UserInfo;
 import com.xxx.demo.frame.annotation.CurrentUser;
 import com.xxx.demo.frame.constants.CurrentUserConstants;
 import com.xxx.demo.models.sys.SysUser;
@@ -21,13 +22,13 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().isAssignableFrom(TsUser.class)
+        return parameter.getParameterType().isAssignableFrom(UserInfo.class)
             && parameter.hasParameterAnnotation(CurrentUser.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        TsUser user = (TsUser) webRequest.getAttribute(CurrentUserConstants.CURRENT_USER, RequestAttributes.SCOPE_REQUEST);
+        UserInfo user = (UserInfo) webRequest.getAttribute(CurrentUserConstants.CURRENT_USER, RequestAttributes.SCOPE_REQUEST);
         if (user != null) {
             return user;
         }

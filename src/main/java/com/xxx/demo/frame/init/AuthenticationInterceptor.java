@@ -1,6 +1,8 @@
 package com.xxx.demo.frame.init;
 
 
+import com.xxx.demo.dto.sys.UserInfo;
+import com.xxx.demo.exception.LoginRequiredException;
 import com.xxx.demo.frame.annotation.LoginRequired;
 import com.xxx.demo.frame.constants.CurrentUserConstants;
 import com.xxx.demo.frame.util.TokenUtils;
@@ -36,10 +38,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      * @param response
      * @param handler
      * @return
-     * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws LoginRequiredException {
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
             return true;
@@ -54,13 +55,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             //String accessToken = request.getParameter(ACCESS_TOKEN);
             String accessToken = request.getHeader(ACCESS_TOKEN);
             if (null == accessToken) {
-                throw new RuntimeException("无token，请重新登录");
+                //throw new RuntimeException("无token，请重新登录");
+                throw new LoginRequiredException("无token，请重新登录");
             }
             Claims claims = TokenUtils.parseJWT(accessToken);
             String phoneNum = claims.getId();
-            TsUser user = tsUserService.findEffctiveByPhoneNum(phoneNum);
+            UserInfo user = tsUserService.findEffctiveUserInfoByPhoneNum(phoneNum);
             if (user == null) {
-                throw new RuntimeException("用户不存在，请重新登录");
+                //throw new RuntimeException("用户不存在，请重新登录");
+                throw new LoginRequiredException("用户不存在，请重新登录");
             }
             // 当前登录用户@CurrentUser
             request.setAttribute(CurrentUserConstants.CURRENT_USER, user);
@@ -77,10 +80,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      * @param httpServletResponse
      * @param o
      * @param modelAndView
-     * @throws Exception
      */
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) {
 
     }
 
@@ -91,10 +93,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      * @param httpServletResponse
      * @param o
      * @param e
-     * @throws Exception
      */
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
 
     }
 

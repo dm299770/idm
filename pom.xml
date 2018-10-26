@@ -1,13 +1,38 @@
+
+
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- project – Run as – Maven build – 在Goals里输入spring-boot:run 浏览器输入localhost:8080 -->
-	<groupId>demo</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>idm</groupId>
+	<artifactId>idm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>demo</name>
+	<packaging>jar</packaging>
+	<name>idm</name>
 	<url>http://maven.apache.org</url>
+
+	<!-- 指定文件id -->
+	<profiles>
+		<profile>
+			<id>alpha</id>
+			<properties>
+				<deploy.type>alpha</deploy.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<deploy.type>dev</deploy.type>
+			</properties>
+		</profile>
+		<profile>
+			<id>product</id>
+			<properties>
+				<deploy.type>product</deploy.type>
+			</properties>
+		</profile>
+	</profiles>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -38,6 +63,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
+
+		<!-- Spring Boot 访问静态资源 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
 
 		<!-- Spring Boot Test 依赖 -->
 		<dependency>
@@ -86,6 +118,20 @@
 			<version>1.2.44</version>
 		</dependency>
 
+		<!-- 部署关闭服务 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>idm</groupId>
+			<artifactId>idm</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/http.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<!-- 打包spring boot应用 -->
@@ -94,8 +140,40 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.xxx.demo.Application</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
-	</build>
 
+
+
+
+
+
+		<resources>
+			<resource>
+				<directory>src/main/webapp</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/lib</directory>
+				<targetPath>BOOT-INF/lib/</targetPath>
+				<includes>
+					<include>**/*.jar</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/profiles/${deploy.type}</directory>
+			</resource>
+		</resources>
+	</build>
 </project>
