@@ -148,7 +148,7 @@ public class TsUserServiceImpl implements TsUserService {
             //添加userInfo信息
             TsUserInfo userInfo = new TsUserInfo();
             userInfo.setUserId(uuid);
-            userInfo.setNickName("nick_name");//默认初始昵称
+            userInfo.setNickName("user_"+(Math.random()*9+1)*1000);//默认初始昵称
             userInfo.setIsEffctive(1);
             userInfo.setCreateDate(new Date());
             try {

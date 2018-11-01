@@ -45,6 +45,11 @@ public class AppResultConstants {
     public final static String NOTFOUND_URL = "未知url ";
 
     /***
+     * 参数异常
+     */
+    public final static String Paramer_ERROR = "参数异常";
+
+    /***
      * 无效url
      */
     public final static Integer NOTFOUND_ERROR = 404;
